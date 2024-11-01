@@ -1,6 +1,6 @@
 Getting familiar with .NET
 
-# Requierements
+# Requirements
 
 .NET must be installed. At the time of writing, instructions for that can be found here:
 

@@ -14,7 +14,7 @@ class Password {
     password = match.Groups["Password"].Value;
   }
 
-  public char? charAt(int pos) {
+  public char? CharAt(int pos) {
     pos = pos - 1; // Password positions are 1-indexed
     if(password.Length <= pos) {
       return null;
@@ -66,10 +66,8 @@ public class Day2 : Day {
     foreach(var line in input) {
       var match = rex.Match(line);
       var pass = new Password(match);
-      var a = pass.letter == pass.charAt(pass.x);
-      var b = pass.letter == pass.charAt(pass.y);
-      Console.WriteLine(pass);
-      Console.WriteLine($"a:{a}: b:{b}, pass:{pass}");
+      var a = pass.letter == pass.CharAt(pass.x);
+      var b = pass.letter == pass.CharAt(pass.y);
       if(a ^ b) {
         valid++;
       }

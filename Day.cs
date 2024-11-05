@@ -23,7 +23,7 @@ public partial class Day {
     for(var i = 0; i < input.Length; i++) {
       var line = input[i];
       if(line == "") {
-        yield return input.Skip(start).Take(i + start);
+        yield return input.Skip(start).Take(i - start);
         start = i + 1;
       }
     }

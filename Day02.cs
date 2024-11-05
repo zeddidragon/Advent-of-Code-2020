@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-class Password {
+struct Password {
   public int x;
   public int y;
   public char letter;

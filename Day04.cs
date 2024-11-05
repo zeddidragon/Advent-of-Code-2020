@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
-using System.Globalization;
 
-class Passport {
+struct Passport {
   static Regex rex = new Regex(@"\b((?<Key>\w{3}):(?<Val>#?\w+))\b");
   // byr (Birth Year)
   // iyr (Issue Year)

@@ -7,7 +7,7 @@ public partial class Day {
 
   protected Day(int _day) {
     day = _day;
-    var path = String.Format("inputs/input-day-{0:00}.txt", day);
+    var path = $"inputs/input-day-{day:00}.txt";
     input = File.ReadAllLines(path);
   }
 

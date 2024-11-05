@@ -19,6 +19,12 @@ struct Passport {
   string? pid;
   string? cid;
 
+  public Passport(IEnumerable<string> input) {
+    foreach(var line in input) {
+      scan(line);
+    }
+  }
+
   public void scan(string line) {
     var match = rex.Match(line);
     while(match.Success) {
@@ -161,16 +167,8 @@ public class Day4 : Day {
   }
 
   IEnumerable<Passport> GetPassports() {
-    var passport = new Passport();
-    foreach(var line in input) {
-      if(line == "") {
-        yield return passport;
-        passport = new Passport();
-      } else {
-        passport.scan(line);
-      }
-    }
-    yield return passport;
+    return InputChunks()
+        .Select(chunk => new Passport(chunk));
   }
 
   public override string Part1() {

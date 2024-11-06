@@ -91,7 +91,7 @@ public class Day7 : Day {
   }
 
   public override string Part2() {
-    // How many bags are insead the shiny gold bag?
+    // How many bags are inside the shiny gold bag?
     return $"{ruleset.ContainedCount("shiny gold")}";
   }
 }

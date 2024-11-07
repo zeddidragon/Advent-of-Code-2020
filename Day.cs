@@ -12,9 +12,9 @@ public partial class Day {
   }
 
   // Each row is one integer
-  protected IEnumerable<int> InputInts() {
+  protected IEnumerable<long> InputInts() {
     return input
-      .Select(int.Parse);
+      .Select(long.Parse);
   }
 
   // Each chunk lasts until the next newline or end of file

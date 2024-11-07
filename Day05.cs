@@ -51,8 +51,8 @@ struct BoardingPass {
   }
 }
 
-public class Day5 : Day {
-  public Day5() : base(5) {
+public class Day05 : Day {
+  public Day05() : base(5) {
   }
 
   IEnumerable<BoardingPass> GetBoardingPasses() {

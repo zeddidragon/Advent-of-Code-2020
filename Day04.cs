@@ -162,8 +162,8 @@ struct Passport {
   }
 }
 
-public class Day4 : Day {
-  public Day4() : base(4) {
+public class Day04 : Day {
+  public Day04() : base(4) {
   }
 
   IEnumerable<Passport> GetPassports() {

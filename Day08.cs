@@ -89,8 +89,8 @@ class Code {
   }
 }
 
-public class Day8 : Day {
-  public Day8() : base(8) {
+public class Day08 : Day {
+  public Day08() : base(8) {
   }
 
   public override string Part1() {

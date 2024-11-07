@@ -1,5 +1,5 @@
-public class Day6 : Day {
-  public Day6() : base(6) {
+public class Day06 : Day {
+  public Day06() : base(6) {
   }
 
   static int Questions = 26;

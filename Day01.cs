@@ -1,5 +1,5 @@
-public class Day1 : Day {
-  public Day1() : base(1) {
+public class Day01 : Day {
+  public Day01() : base(1) {
   }
 
   public override string Part1() {

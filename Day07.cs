@@ -75,8 +75,8 @@ class Ruleset {
   }
 }
 
-public class Day7 : Day {
-  public Day7() : base(7) {
+public class Day07 : Day {
+  public Day07() : base(7) {
   }
 
   Ruleset ruleset = new Ruleset();

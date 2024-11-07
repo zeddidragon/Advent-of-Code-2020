@@ -26,10 +26,10 @@ struct Password {
   }
 }
 
-public class Day2 : Day {
+public class Day02 : Day {
   static string pattern = @"\b(?<Min>\d+)-(?<Max>\d+) (?<Letter>\w): (?<Password>\w+)";
 
-  public Day2() : base(2) {
+  public Day02() : base(2) {
   }
 
   public override string Part1() {

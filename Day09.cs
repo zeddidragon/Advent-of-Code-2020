@@ -1,9 +1,8 @@
 public class Day09 : Day {
   public Day09() : base(9) {
-    numbers = new long[0];
   }
 
-  long[] numbers;
+  long[] numbers = new long[0];
   long weakpoint = 0;
 
   public override string Part1() {

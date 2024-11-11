@@ -1,50 +1,3 @@
-enum Tile {
-  Field = '.',
-  Tree = '#'
-}
-
-class Map {
-  public int width {
-    get;
-    private set;
-  }
-  public int height {
-    get => tiles.Length / width;
-  }
-  Tile[] tiles;
-
-  public Map(string[] input) {
-    width = input[0].Length;
-    int height = input.Length;
-
-    tiles = new Tile[width * height];
-    var index = 0;
-    foreach(var line in input) {
-      foreach(var c in line) {
-        if(c == '#') {
-          tiles[index] = Tile.Tree;
-        } else {
-          tiles[index] = Tile.Field;
-        }
-        index++;
-      }
-    }
-  }
-
-  public Tile TileAt(int x, int y) {
-    x = x % width;
-    return tiles[y * width + x];
-  }
-
-  public override string ToString() {
-    var rows = tiles
-      .Select(tile => (char)tile)
-      .Chunk(width)
-      .Select(row => String.Join("", row));
-    return String.Join("\n", rows.ToArray());
-  }
-}
-
 public class Day03 : Day {
   private Map map;
   private int height;
@@ -60,7 +13,7 @@ public class Day03 : Day {
 
     // Move down the map 1 down, 3 to the right. The wrapping of x happens in the class
     for(var y = 0; y < height; y++) {
-      if(map.TileAt(x, y) == Tile.Tree) {
+      if(map.TileAt(x, y) == Tile.Filled) {
         trees++;
       }
       x += 3;
@@ -90,7 +43,7 @@ public class Day03 : Day {
 
         // Move down the map 1 down, 3 to the right. The wrapping of x happens in the class
         for(var y = 0; y < height; y += slope.y) {
-          if(map.TileAt(x, y) == Tile.Tree) {
+          if(map.TileAt(x, y) == Tile.Filled) {
             trees++;
           }
           x += slope.x;

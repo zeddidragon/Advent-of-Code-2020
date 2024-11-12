@@ -1,32 +1,32 @@
 using System.Text.RegularExpressions;
 
-struct Password {
-  public int x;
-  public int y;
-  public char letter;
-  public string password;
-
-  public Password(Match match) {
-    x = int.Parse(match.Groups["Min"].Value);
-    y = int.Parse(match.Groups["Max"].Value);
-    letter = char.Parse(match.Groups["Letter"].Value);
-    password = match.Groups["Password"].Value;
-  }
-
-  public char? CharAt(int pos) {
-    pos = pos - 1; // Password positions are 1-indexed
-    if(password.Length <= pos) {
-      return null;
-    }
-    return password[pos];
-  }
-
-  public override string ToString() {
-    return $"{x}-{y} {letter}: {password}";
-  }
-}
-
 public class Day02 : Day {
+  private struct PasswordLine {
+    public int X;
+    public int Y;
+    public char Letter;
+    public string Password;
+
+    public PasswordLine(Match match) {
+      X = int.Parse(match.Groups["Min"].Value);
+      Y = int.Parse(match.Groups["Max"].Value);
+      Letter = char.Parse(match.Groups["Letter"].Value);
+      Password = match.Groups["Password"].Value;
+    }
+
+    public char? CharAt(int pos) {
+      pos = pos - 1; // Password positions are 1-indexed
+      if(Password.Length <= pos) {
+        return null;
+      }
+      return Password[pos];
+    }
+
+    public override string ToString() {
+      return $"{X}-{Y} {Letter}: {Password}";
+    }
+  }
+
   static string pattern = @"\b(?<Min>\d+)-(?<Max>\d+) (?<Letter>\w): (?<Password>\w+)";
 
   public Day02() : base(2) {
@@ -41,14 +41,14 @@ public class Day02 : Day {
     var valid = 0;
     foreach(var line in input) {
       var match = rex.Match(line);
-      var pass = new Password(match);
+      var pass = new PasswordLine(match);
       var count = 0;
-      foreach(char c in pass.password) {
-        if(c == pass.letter) {
+      foreach(char c in pass.Password) {
+        if(c == pass.Letter) {
           count++;
         }
       }
-      if(count >= pass.x && count <= pass.y) {
+      if(count >= pass.X && count <= pass.Y) {
         valid++;
       }
     }
@@ -64,9 +64,9 @@ public class Day02 : Day {
     var valid = 0;
     foreach(var line in input) {
       var match = rex.Match(line);
-      var pass = new Password(match);
-      var a = pass.letter == pass.CharAt(pass.x);
-      var b = pass.letter == pass.CharAt(pass.y);
+      var pass = new PasswordLine(match);
+      var a = pass.Letter == pass.CharAt(pass.X);
+      var b = pass.Letter == pass.CharAt(pass.Y);
       if(a ^ b) {
         valid++;
       }

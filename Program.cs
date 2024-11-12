@@ -11,6 +11,7 @@
     new Day09(),
     new Day10(),
     new Day11(),
+    new Day12(),
   };
 
   foreach(var day in advent) {

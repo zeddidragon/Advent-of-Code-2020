@@ -4,25 +4,15 @@ enum Tile {
   Seat = 'L',
 }
 
-struct Vector {
-  public int X;
-  public int Y;
-
-  public Vector(int x, int y) {
-    X = x;
-    Y = y;
-  }
-}
-
 class Map {
   public int width {
     get;
     private set;
   }
   public int height {
-    get => tiles.Length / width;
+    get => Tiles.Length / width;
   }
-  Tile[] tiles;
+  Tile[] Tiles;
 
   Tile ParseTile(char input) {
     switch(input) {
@@ -35,8 +25,8 @@ class Map {
     }
   }
 
-  public Map(Tile[] _tiles, int _width) {
-    tiles = (Tile[])_tiles.Clone();
+  public Map(Tile[] _Tiles, int _width) {
+    Tiles = (Tile[])_Tiles.Clone();
     width = _width;
   }
 
@@ -44,11 +34,11 @@ class Map {
     width = input[0].Length;
     int height = input.Length;
 
-    tiles = new Tile[width * height];
+    Tiles = new Tile[width * height];
     var index = 0;
     foreach(var line in input) {
       foreach(var c in line) {
-        tiles[index] = ParseTile(c);
+        Tiles[index] = ParseTile(c);
         index++;
       }
     }
@@ -60,16 +50,16 @@ class Map {
   }
 
   public Tile TileAt(int x, int y) {
-    return tiles[CoordIndex(x, y)];
+    return Tiles[CoordIndex(x, y)];
   }
 
   public void SetTileAt(int x, int y, Tile tile) {
-    tiles[CoordIndex(x, y)] = tile;
+    Tiles[CoordIndex(x, y)] = tile;
   }
 
   // Counts instances of `cmp` mapwide
   public int Count(Tile cmp) {
-    return tiles.Count(tile => tile == cmp);
+    return Tiles.Count(tile => tile == cmp);
   }
 
   static Vector[] neighbours = {
@@ -95,7 +85,7 @@ class Map {
       if(_x < 0 || _x >= width) continue;
       if(_y < 0 || _y >= height) continue;
       var index = _y * width + _x;
-      var tile = tiles[index];
+      var tile = Tiles[index];
       if(tile == cmp) {
         count++;
       }
@@ -112,7 +102,7 @@ class Map {
       while(_x >= 0 && _x < width
         && _y >= 0 && _y < height) {
         var index = _y * width + _x;
-        var tile = tiles[index];
+        var tile = Tiles[index];
         if(tile == pass) {
           _x += dir.X;
           _y += dir.Y;
@@ -129,11 +119,11 @@ class Map {
   }
 
   public Map Clone() {
-    return new Map(tiles, width);
+    return new Map(Tiles, width);
   }
 
   public override string ToString() {
-    var rows = tiles
+    var rows = Tiles
       .Select(tile => (char)tile)
       .Chunk(width)
       .Select(row => String.Join("", row));

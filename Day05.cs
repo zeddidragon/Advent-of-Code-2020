@@ -1,57 +1,57 @@
-struct BoardingPass {
-  public static uint Cols = 8;
-  public static uint Rows = 128;
-  public static uint MaxId = Cols * (Rows - 1) - 1;
+public class Day05 : Day {
+  private struct BoardingPass {
+    public static uint Cols = 8;
+    public static uint Rows = 128;
+    public static uint MaxId = Cols * (Rows - 1) - 1;
 
-  string raw;
-  public uint id {
-    get;
-    private set;
-  }
-
-  public uint row {
-    get {
-      return id / Cols;
+    string raw;
+    public uint Id {
+      get;
+      private set;
     }
-  }
 
-  public uint col {
-    get {
-      return id % Cols;
-    }
-  }
-
-  public BoardingPass(string input) {
-    raw = input;
-    uint rowLower = 0;
-    uint rowUpper = Rows - 1;
-    uint colLower = 0;
-    uint colUpper = Cols - 1;
-    foreach(var c in input) {
-      switch(c) {
-        case 'F':
-          rowUpper = rowLower + (rowUpper - rowLower) / 2;
-          break;
-        case 'B':
-          rowLower = rowLower + (rowUpper - rowLower) / 2 + 1;
-          break;
-        case 'L':
-          colUpper = colLower + (colUpper - colLower) / 2;
-          break;
-        case 'R':
-          colLower = colLower + (colUpper - colLower) / 2 + 1;
-          break;
+    public uint Row {
+      get {
+        return Id / Cols;
       }
     }
-    id = rowLower * Cols + colLower;
+
+    public uint Col {
+      get {
+        return Id % Cols;
+      }
+    }
+
+    public BoardingPass(string input) {
+      raw = input;
+      uint rowLower = 0;
+      uint rowUpper = Rows - 1;
+      uint colLower = 0;
+      uint colUpper = Cols - 1;
+      foreach(var c in input) {
+        switch(c) {
+          case 'F':
+            rowUpper = rowLower + (rowUpper - rowLower) / 2;
+            break;
+          case 'B':
+            rowLower = rowLower + (rowUpper - rowLower) / 2 + 1;
+            break;
+          case 'L':
+            colUpper = colLower + (colUpper - colLower) / 2;
+            break;
+          case 'R':
+            colLower = colLower + (colUpper - colLower) / 2 + 1;
+            break;
+        }
+      }
+      Id = rowLower * Cols + colLower;
+    }
+
+    public override string ToString() {
+      return $"{raw}: Row {Row}, Col {Col}, seat ID {Id}";
+    }
   }
 
-  public override string ToString() {
-    return $"{raw}: row {row}, col {col}, seat ID {id}";
-  }
-}
-
-public class Day05 : Day {
   public Day05() : base(5) {
   }
 
@@ -66,12 +66,12 @@ public class Day05 : Day {
     uint maxId = 0;
     filled = new bool[BoardingPass.MaxId + 1];
 
-    // Max ID of all boarding passes?
+    // Max Id of all boarding passes?
     foreach(var pass in GetBoardingPasses()) {
-      if(pass.id > maxId) {
-        maxId = pass.id;
+      if(pass.Id > maxId) {
+        maxId = pass.Id;
       }
-      filled[pass.id] = true;
+      filled[pass.Id] = true;
     }
 
     return $"{maxId}";

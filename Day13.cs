@@ -53,6 +53,7 @@ public class Day13 : Day {
       }
 
       long offset = (long)cycleCount - (long)inverseOffset;
+      
       return new Bus((long)cycleCount, offset);
     }
 

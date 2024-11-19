@@ -44,6 +44,6 @@ public struct Vector {
   public static Vector operator -(Vector a, Vector b) => new Vector(a.X - b.X, a.Y - b.Y);
   public static Vector operator *(Vector a, int b) => new Vector(a.X * b, a.Y * b);
 
-  public override string ToString() => $"({X}, {Y})";
+  public override string ToString() => $"({X},{Y})";
 }
 

@@ -11,17 +11,15 @@ public class Day11 : Day {
   int StepPart1(Map map) {
     var changes = 0;
     var old = map.Clone();
-    for(var y = 0; y < map.height; y++) {
-      for(var x = 0; x < map.width; x++) {
-        var tile = old.TileAt(x, y);
-        var filled = old.CountNeighbours(x, y); 
-        if(tile == Tile.Seat && filled == 0) {
-          map.SetTileAt(x, y, Tile.Filled);
-          changes++;
-        } else if(tile == Tile.Filled && filled >= 4) {
-          map.SetTileAt(x, y, Tile.Seat);
-          changes++;
-        }
+    foreach(var point in map.EachPoint()) {
+      var tile = old.TileAt(point);
+      var filled = old.CountNeighbours(point);
+      if(tile == Tile.Seat && filled == 0) {
+        map.SetTileAt(point, Tile.Filled);
+        changes++;
+      } else if(tile == Tile.Filled && filled >= 4) {
+        map.SetTileAt(point, Tile.Seat);
+        changes++;
       }
     }
     return changes;
@@ -45,17 +43,15 @@ public class Day11 : Day {
   int StepPart2(Map map) {
     var changes = 0;
     var old = map.Clone();
-    for(var y = 0; y < map.height; y++) {
-      for(var x = 0; x < map.width; x++) {
-        var tile = old.TileAt(x, y);
-        var filled = old.Count8Rays(x, y); 
-        if(tile == Tile.Seat && filled == 0) {
-          map.SetTileAt(x, y, Tile.Filled);
-          changes++;
-        } else if(tile == Tile.Filled && filled >= 5) {
-          map.SetTileAt(x, y, Tile.Seat);
-          changes++;
-        }
+    foreach(var point in map.EachPoint()) {
+      var tile = old.TileAt(point);
+      var filled = old.Count8Rays(point); 
+      if(tile == Tile.Seat && filled == 0) {
+        map.SetTileAt(point, Tile.Filled);
+        changes++;
+      } else if(tile == Tile.Filled && filled >= 5) {
+        map.SetTileAt(point, Tile.Seat);
+        changes++;
       }
     }
     return changes;

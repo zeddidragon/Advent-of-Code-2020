@@ -2,6 +2,7 @@ enum Tile {
   Empty = '.',
   Filled = '#',
   Seat = 'L',
+  Ring = 'O',
 }
 
 class Map {
@@ -20,6 +21,8 @@ class Map {
         return Tile.Filled;
       case 'L':
         return Tile.Seat;
+      case 'O':
+        return Tile.Ring;
       default:
         return Tile.Empty;
     }
@@ -27,6 +30,11 @@ class Map {
 
   public Map(Tile[] tiles, int width) {
     Tiles = (Tile[])tiles.Clone();
+    Width = width;
+  }
+
+  public Map(int width, int height) {
+    Tiles = new Tile[width * height];
     Width = width;
   }
 
@@ -130,8 +138,134 @@ class Map {
     }
   }
 
+  public IEnumerable<Vector> EachPoint(Tile cmp) {
+    return EachPoint().Where(pos => TileAt(pos) == cmp);
+  }
+
   public Map Clone() {
     return new Map(Tiles, Width);
+  }
+
+  public Map Rotate(int dir = 90) {
+    if(dir == 0) {
+      return this;
+    }
+
+    var map = new Map(Height, Width);
+    foreach(var point in EachPoint()) {
+      var rotated = new Vector(Width - point.Y - 1, point.X);
+      map.SetTileAt(rotated, TileAt(point));
+    }
+
+    return map.Rotate(dir - 90);
+  }
+
+  public Map FlipX() {
+    var map = new Map(Height, Width);
+    foreach(var point in EachPoint()) {
+      var rotated = new Vector(Width - point.X - 1, point.Y);
+      map.SetTileAt(rotated, TileAt(point));
+    }
+
+    return map;
+  }
+
+  public Map FlipY() {
+    var map = new Map(Height, Width);
+    foreach(var point in EachPoint()) {
+      var rotated = new Vector(point.X, Height - point.Y - 1);
+      map.SetTileAt(rotated, TileAt(point));
+    }
+
+    return map;
+  }
+
+  public void Blit(Map other, Vector offset) {
+    foreach(var point in other.EachPoint()) {
+      var pointAt = point + offset;
+      if(pointAt.X < 0
+        || pointAt.X >= Width
+        || pointAt.Y < 0
+        || pointAt.Y >= Height
+      ) {
+        continue;
+      }
+      SetTileAt(pointAt, other.TileAt(point));
+    }
+  }
+
+  // Crops x tiles off each edge
+  public Map Cropped(int count = 1) {
+    return Cropped(new Vector(count, count), new Vector(Width - count, Height - count));
+  }
+
+  public Map Cropped(Vector offset, Vector limit) {
+    var width = limit.X - offset.X;
+    var height = limit.Y - offset.Y;
+    var map = new Map(width, height);
+    map.Blit(this, -offset);
+    return map;
+  }
+
+  public Vector? MatchPosition(Map subMap) {
+    return MatchPosition(subMap, new Vector(-1, 0));
+  }
+
+  Vector East = new Vector(1, 0);
+  public Vector? MatchPosition(Map subMap, Vector pos) {
+    while(true) {
+      pos += East;
+      if(pos.X + subMap.Width > Width) {
+        pos = new Vector(0, pos.Y + 1);
+      }
+      if(pos.Y + subMap.Height > Height) {
+        break;
+      }
+      if(subMap
+        .EachPoint(Tile.Filled)
+        .All(subPos => TileAt(pos + subPos) == Tile.Filled)
+      ) {
+        return pos;
+      }
+    }
+    return null;
+  }
+
+  public IEnumerable<Map> Rotations() {
+    var map = Clone();
+    for(var dir = 0; dir < 360; dir += 90) {
+      yield return map;
+      yield return map.FlipX();
+      yield return map.FlipY();
+      map = map.Rotate();
+    }
+  }
+
+  public IEnumerable<Tile> Row(int rowNum) {
+    while(rowNum < 0) {
+      rowNum += Width;
+    }
+    return Tiles
+      .Chunk(Width)
+      .Skip(rowNum)
+      .First();
+  }
+
+  public string StringRow(int rowNum) {
+    return String.Join("", Row(rowNum).Select(tile => (char)tile));
+  }
+
+  public IEnumerable<Tile> Col(int colNum) {
+    while(colNum < 0) {
+      colNum += Height;
+    }
+    return EachPoint()
+      .Where(pos => pos.X == colNum)
+      .Select(pos => TileAt(pos));
+  }
+
+  public string StringCol(int colNum) {
+    return String.Join("", Col(colNum).Select(tile => (char)tile));
   }
 
   public override string ToString() {
@@ -140,5 +274,16 @@ class Map {
       .Chunk(Width)
       .Select(row => String.Join("", row));
     return String.Join("\n", rows.ToArray());
+  }
+
+  public static string Display(IEnumerable<Map> maps) {
+    var maxHeight = maps.Max(map => {
+        return map.Height;
+    });
+    var lines = new List<string>();
+    for(var i = 0; i < maxHeight; i++) {
+      lines.Add(String.Join(" ", maps.Select(map => map.StringRow(i))));
+    }
+    return String.Join("\n", lines);
   }
 }
